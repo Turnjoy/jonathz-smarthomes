@@ -35,10 +35,14 @@
         </div>
         <div class="services-list">
             {% for service in services %}
-                <div class="service-item">
+                <article class="service-item">
+                    <div class="service-card-header">
+                        <div class="service-icon service-icon-{{ service.badge|lower }}"></div>
+                        <span class="service-chip">{{ service.badge }}</span>
+                    </div>
                     <h3>{{ service.name }}</h3>
                     <p>{{ service.description }}</p>
-                </div>
+                </article>
             {% endfor %}
         </div>
     </section>

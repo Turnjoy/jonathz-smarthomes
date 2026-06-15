@@ -47,14 +47,17 @@ def marketing():
     services = [
         {
             "name": "Curtain Automation",
+            "badge": "Curtain",
             "description": "Motorized curtain control with instant open and close commands.",
         },
         {
             "name": "Lighting & Plug Control",
+            "badge": "Light",
             "description": "Low-latency switching for lights, sockets, and relay modules.",
         },
         {
             "name": "Camera Monitoring",
+            "badge": "Camera",
             "description": "Live stream slots for camera feeds mapped to each room.",
         },
     ]
