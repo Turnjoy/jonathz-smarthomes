@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}{{ brand.company_name }} | Smart Home Automation{% endblock %}
+{% block body %}
+<header class="site-nav">
+    <a class="brand-lockup" href="{{ url_for('marketing') }}">
+        {% if brand.assets.logo %}
+            <img src="{{ brand.assets.logo }}" alt="{{ brand.company_name }} logo" />
+        {% else %}
+            <span class="brand-mark">{{ brand.company_name[:1] }}</span>
+        {% endif %}
+        <span>{{ brand.company_name }}</span>
+    </a>
+    <nav class="nav-actions">
+        <a href="{{ url_for('login') }}">Login</a>
+        <a class="button button-primary" href="{{ url_for('signup') }}">Get Started</a>
+    </nav>
+</header>
+
+<main>
+    <section class="hero" {% if brand.assets.hero %}style="background-image: linear-gradient(90deg, rgba(8, 15, 23, .78), rgba(8, 15, 23, .2)), url('{{ brand.assets.hero }}');"{% endif %}>
+        <div class="hero-copy">
+            <p class="eyebrow">Multi-tenant IoT automation platform</p>
+            <h1>{{ brand.company_name }}</h1>
+            <p>{{ brand.tagline }}</p>
+            <div class="hero-actions">
+                <a class="button button-primary" href="{{ url_for('signup') }}">Create Account</a>
+                <a class="button button-ghost" href="{{ url_for('login') }}">Open Console</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="kit-band">
+        <div class="section-heading">
+            <p class="eyebrow">Smart kits</p>
+            <h2>Unified control for every connected room</h2>
+        </div>
+        <div class="kit-grid">
+            {% for kit in smart_kits %}
+                <article class="kit-card">
+                    <img src="{{ kit.image }}" alt="{{ kit.name }}" />
+                    <div>
+                        <span class="device-chip">{{ kit.type }}</span>
+                        <h3>{{ kit.name }}</h3>
+                        <p>{{ kit.description }}</p>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="footer-left">
+        <span>{{ brand.contact.email }}</span>
+        <span>{{ brand.contact.phone }}</span>
+        <span>{{ brand.contact.address }}</span>
+    </div>
+    <div class="footer-links">
+        <a href="{{ brand.support.help_url }}">Support</a>
+        <a href="{{ brand.support.privacy_url }}">Privacy</a>
+        <a href="{{ brand.support.terms_url }}">Terms</a>
+    </div>
+</footer>
+{% endblock %}

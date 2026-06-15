@@ -1,0 +1,8 @@
+<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Curtain icon">
+  <rect x="14" y="16" width="52" height="52" rx="10" fill="#dbeafe"/>
+  <path d="M32 16 L32 68" stroke="#0f766e" stroke-width="6"/>
+  <path d="M24 24 L24 60" stroke="#0f766e" stroke-width="4"/>
+  <path d="M40 24 L40 60" stroke="#0f766e" stroke-width="4"/>
+  <path d="M48 24 L48 60" stroke="#0f766e" stroke-width="4"/>
+  <path d="M30 16 L30 8 M50 16 L50 8" stroke="#0f766e" stroke-width="4" stroke-linecap="round"/>
+</svg>

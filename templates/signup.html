@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Sign Up | {{ brand.company_name }}{% endblock %}
+{% block body %}
+<main class="auth-page">
+    <section class="auth-panel">
+        <a class="brand-lockup auth-brand" href="{{ url_for('marketing') }}">
+            {% if brand.assets.logo %}
+                <img src="{{ brand.assets.logo }}" alt="{{ brand.company_name }} logo" />
+            {% else %}
+                <span class="brand-mark">{{ brand.company_name[:1] }}</span>
+            {% endif %}
+            <span>{{ brand.company_name }}</span>
+        </a>
+        <h1>Create your account</h1>
+        <form method="POST" action="{{ url_for('signup') }}" class="form-stack">
+            <label>
+                <span>Name</span>
+                <input type="text" name="name" autocomplete="name" required />
+            </label>
+            <label>
+                <span>Email</span>
+                <input type="email" name="email" autocomplete="email" required />
+            </label>
+            <label>
+                <span>Password</span>
+                <input type="password" name="password" autocomplete="new-password" minlength="8" required />
+            </label>
+            <button type="submit" class="button button-primary button-full">Sign Up</button>
+        </form>
+        <p class="auth-link">Already have an account? <a href="{{ url_for('login') }}">Log in</a></p>
+    </section>
+</main>
+{% endblock %}

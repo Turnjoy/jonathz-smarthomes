@@ -1,0 +1,7 @@
+<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Plug icon">
+  <rect x="20" y="12" width="40" height="40" rx="10" fill="#0f766e"/>
+  <rect x="30" y="6" width="8" height="20" rx="4" fill="#ffffff"/>
+  <rect x="42" y="6" width="8" height="20" rx="4" fill="#ffffff"/>
+  <rect x="24" y="52" width="32" height="18" rx="8" fill="#1f2937"/>
+  <path d="M38 24 H42" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+</svg>

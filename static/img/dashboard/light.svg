@@ -1,0 +1,5 @@
+<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Light icon">
+  <circle cx="40" cy="30" r="20" fill="#f9d423" stroke="#f59e0b" stroke-width="4"/>
+  <rect x="34" y="50" width="12" height="20" rx="4" fill="#1e293b"/>
+  <path d="M40 10 L40 0 M40 60 L40 72 M10 30 L0 30 M80 30 L70 30 M18 18 L10 10 M62 18 L70 10" stroke="#f59e0b" stroke-width="4" stroke-linecap="round"/>
+</svg>

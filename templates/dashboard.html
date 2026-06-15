@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}Dashboard | {{ brand.company_name }}{% endblock %}
+{% block head %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/camera.js') }}" defer></script>
+{% endblock %}
+{% block body %}
+<header class="console-nav">
+    <a class="brand-lockup" href="{{ url_for('dashboard') }}">
+        {% if brand.assets.logo %}
+            <img src="{{ brand.assets.logo }}" alt="{{ brand.company_name }} logo" />
+        {% else %}
+            <span class="brand-mark">{{ brand.company_name[:1] }}</span>
+        {% endif %}
+        <span>{{ brand.company_name }}</span>
+    </a>
+    <form method="POST" action="{{ url_for('logout') }}">
+        <button class="button button-ghost" type="submit">Logout</button>
+    </form>
+</header>
+
+<main class="console-shell">
+    <section class="console-heading">
+        <div>
+            <p class="eyebrow">Private console</p>
+            <h1>Welcome, {{ user.name }}</h1>
+        </div>
+        <div class="support-card">
+            <span>Support</span>
+            <strong>{{ brand.contact.email }}</strong>
+        </div>
+    </section>
+
+    {% if rooms %}
+        <section class="room-grid">
+            {% for room in rooms %}
+                <article class="room-section">
+                    <header>
+                        <h2>{{ room.room_name }}</h2>
+                        <span>{{ room.devices|length }} devices</span>
+                    </header>
+                    <div class="device-grid">
+                        {% for device in room.devices %}
+                            <article class="device-card" data-device-id="{{ device.id }}" data-device-type="{{ device.device_type.value }}">
+                                <div class="device-topline">
+                                    <div class="device-heading">
+                                        <img class="device-icon" src="{{ url_for('static', filename='img/dashboard/' ~ device.device_type.value|lower ~ '.svg') }}" alt="{{ device.device_type.value }} icon" />
+                                        <div>
+                                            <span class="device-chip">{{ device.device_type.value }}</span>
+                                            <h3>{{ device.device_name }}</h3>
+                                        </div>
+                                    </div>
+                                    <span class="state-pill" data-state>{{ device.current_state }}</span>
+                                </div>
+
+                                {% if device.device_type.value in ["LIGHT", "PLUG"] %}
+                                    <button class="toggle-switch {% if device.current_state == 'ON' %}is-on{% endif %}" data-action="TOGGLE" aria-label="Toggle {{ device.device_name }}">
+                                        <span></span>
+                                    </button>
+                                {% elif device.device_type.value == "CURTAIN" %}
+                                    <div class="button-pair">
+                                        <button class="button button-primary" data-action="OPEN" type="button">Open</button>
+                                        <button class="button button-secondary" data-action="CLOSE" type="button">Close</button>
+                                    </div>
+                                {% elif device.device_type.value == "CAMERA" %}
+                                    <div class="camera-frame" data-stream-url="{{ device.stream_url or '' }}">
+                                        {% if device.stream_url %}
+                                            <img src="{{ device.stream_url }}" alt="{{ device.device_name }} live stream" />
+                                        {% else %}
+                                            <canvas width="640" height="360" aria-label="{{ device.device_name }} stream placeholder"></canvas>
+                                        {% endif %}
+                                    </div>
+                                    <div class="button-pair">
+                                        <button class="button button-primary" data-action="START" type="button">Start</button>
+                                        <button class="button button-secondary" data-action="STOP" type="button">Stop</button>
+                                    </div>
+                                {% endif %}
+                            </article>
+                        {% endfor %}
+                    </div>
+                </article>
+            {% endfor %}
+        </section>
+    {% else %}
+        <section class="empty-state">
+            <h2>No rooms linked yet</h2>
+            <p>Add rooms and devices in the database, and this tenant console will render them automatically.</p>
+        </section>
+    {% endif %}
+</main>
+{% endblock %}
