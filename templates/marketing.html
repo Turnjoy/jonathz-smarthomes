@@ -17,7 +17,7 @@
 </header>
 
 <main>
-    <section class="hero" {% if brand.assets.hero %}style="background-image: linear-gradient(90deg, rgba(8, 15, 23, .78), rgba(8, 15, 23, .2)), url('{{ brand.assets.hero }}');"{% endif %}>
+    <section class="hero">
         <div class="hero-copy">
             <p class="eyebrow">Multi-tenant IoT automation platform</p>
             <h1>{{ brand.company_name }}</h1>
@@ -28,33 +28,10 @@
             </div>
         </div>
     </section>
-
-    <section class="kit-band">
-        <div class="section-heading">
-            <p class="eyebrow">Smart kits</p>
-            <h2>Unified control for every connected room</h2>
-        </div>
-        <div class="kit-grid">
-            {% for kit in smart_kits %}
-                <article class="kit-card">
-                    <img src="{{ kit.image }}" alt="{{ kit.name }}" />
-                    <div>
-                        <span class="device-chip">{{ kit.type }}</span>
-                        <h3>{{ kit.name }}</h3>
-                        <p>{{ kit.description }}</p>
-                    </div>
-                </article>
-            {% endfor %}
-        </div>
-    </section>
 </main>
 
 <footer class="site-footer">
-    <div class="footer-left">
-        <span>{{ brand.contact.email }}</span>
-        <span>{{ brand.contact.phone }}</span>
-        <span>{{ brand.contact.address }}</span>
-    </div>
+
     <div class="footer-links">
         <a href="{{ brand.support.help_url }}">Support</a>
         <a href="{{ brand.support.privacy_url }}">Privacy</a>

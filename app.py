@@ -44,27 +44,7 @@ def current_user():
 
 @app.route('/')
 def marketing():
-    smart_kits = [
-        {
-            "name": "Curtain Automation",
-            "type": "CURTAIN",
-            "description": "Motorized curtain control with instant open and close commands.",
-            "image": "/static/img/IMG-20260529-WA0008.jpg",
-        },
-        {
-            "name": "Lighting & Plug Control",
-            "type": "LIGHT",
-            "description": "Low-latency switching for lights, sockets, and relay modules.",
-            "image": "/static/img/WhatsApp Image 2026-05-16 at 2.57.23 PM.jpeg",
-        },
-        {
-            "name": "Camera Monitoring",
-            "type": "CAMERA",
-            "description": "Live stream slots for camera endpoints already mapped to each home.",
-            "image": app.brand["assets"]["hero"] or "/static/img/IMG-20260529-WA0008.jpg",
-        },
-    ]
-    return render_template('marketing.html', smart_kits=smart_kits)
+    return render_template('marketing.html')
 
 
 @app.route('/signup', methods=['GET', 'POST'])
