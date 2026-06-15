@@ -21,10 +21,25 @@ class User(db.Model):
     password_hash = db.Column(db.String(256), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+    houses = db.relationship('House', back_populates='user', cascade='all, delete-orphan')
     rooms = db.relationship('Room', back_populates='user', cascade='all, delete-orphan')
 
     def __repr__(self):
         return f'<User {self.email}>'
+
+
+class House(db.Model):
+    __tablename__ = 'houses'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False, index=True)
+    house_name = db.Column(db.String(120), nullable=False)
+
+    user = db.relationship('User', back_populates='houses')
+    rooms = db.relationship('Room', back_populates='house', cascade='all, delete-orphan')
+
+    def __repr__(self):
+        return f'<House {self.house_name}>'
 
 
 class Room(db.Model):
@@ -32,9 +47,11 @@ class Room(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False, index=True)
+    house_id = db.Column(db.Integer, db.ForeignKey('houses.id'), nullable=False, index=True)
     room_name = db.Column(db.String(120), nullable=False)
 
     user = db.relationship('User', back_populates='rooms')
+    house = db.relationship('House', back_populates='rooms')
     devices = db.relationship('Device', back_populates='room', cascade='all, delete-orphan')
 
     def __repr__(self):

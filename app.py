@@ -10,7 +10,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from config.branding import load_brand_config
 from database.db_init import init_db
-from database.models import Device, DeviceType, Room, User, db
+from database.models import Device, DeviceType, House, Room, User, db
 
 app = Flask(__name__)
 app.config.from_object('config.settings')
@@ -86,10 +86,14 @@ def signup():
         db.session.add(user)
         db.session.commit()
 
+        default_house = House(user_id=user.id, house_name='Primary Home')
+        db.session.add(default_house)
+        db.session.commit()
+
         session.clear()
         session['user_id'] = user.id
         flash('Your smart home console is ready.', 'success')
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('dashboard', house_id=default_house.id))
 
     return render_template('signup.html')
 
@@ -118,16 +122,83 @@ def logout():
     return redirect(url_for('marketing'))
 
 
+@app.route('/house/create', methods=['POST'])
+@login_required
+def create_house():
+    user = current_user()
+    house_name = request.form.get('house_name', '').strip()
+    if not house_name:
+        flash('Enter a house name to continue.', 'error')
+        return redirect(url_for('dashboard'))
+
+    house = House(user_id=user.id, house_name=house_name)
+    db.session.add(house)
+    db.session.commit()
+    flash('House added successfully.', 'success')
+    return redirect(url_for('dashboard', house_id=house.id))
+
+
+@app.route('/room/create', methods=['POST'])
+@login_required
+def create_room():
+    user = current_user()
+    house_id = request.form.get('house_id', type=int)
+    room_name = request.form.get('room_name', '').strip()
+
+    if not room_name or not house_id:
+        flash('Enter a valid room name.', 'error')
+        return redirect(url_for('dashboard'))
+
+    house = House.query.filter_by(id=house_id, user_id=user.id).first()
+    if not house:
+        flash('House not found.', 'error')
+        return redirect(url_for('dashboard'))
+
+    room = Room(user_id=user.id, house_id=house.id, room_name=room_name)
+    db.session.add(room)
+    db.session.commit()
+    flash('Room added successfully.', 'success')
+    return redirect(url_for('dashboard', house_id=house.id))
+
+
 @app.route('/dashboard')
 @login_required
 def dashboard():
     user = current_user()
-    rooms = (
-        Room.query.filter_by(user_id=user.id)
-        .order_by(Room.room_name.asc())
-        .all()
+    houses = House.query.filter_by(user_id=user.id).order_by(House.house_name.asc()).all()
+    selected_house_id = request.args.get('house_id', type=int)
+    selected_house = None
+
+    if selected_house_id:
+        selected_house = next((house for house in houses if house.id == selected_house_id), None)
+    if selected_house is None:
+        selected_house = houses[0] if houses else None
+
+    house_summaries = []
+    for house in houses:
+        device_count = sum(len(room.devices) for room in house.rooms)
+        house_summaries.append({
+            'house': house,
+            'room_count': len(house.rooms),
+            'device_count': device_count,
+        })
+
+    rooms = []
+    selected_house_device_count = 0
+    if selected_house:
+        rooms = Room.query.filter_by(house_id=selected_house.id).order_by(Room.room_name.asc()).all()
+        selected_house_device_count = sum(len(room.devices) for room in rooms)
+
+    return render_template(
+        'dashboard.html',
+        user=user,
+        houses=houses,
+        house_summaries=house_summaries,
+        selected_house=selected_house,
+        selected_house_device_count=selected_house_device_count,
+        rooms=rooms,
+        device_types=DeviceType,
     )
-    return render_template('dashboard.html', user=user, rooms=rooms, device_types=DeviceType)
 
 
 @app.route('/api/device/control', methods=['POST'])

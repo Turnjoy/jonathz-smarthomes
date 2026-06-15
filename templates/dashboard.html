@@ -31,6 +31,42 @@
         </div>
     </section>
 
+    <section class="house-band">
+        <div class="house-navigation">
+            <form method="GET" action="{{ url_for('dashboard') }}">
+                <label for="house_id">Select house</label>
+                <select name="house_id" id="house_id" onchange="this.form.submit()">
+                    {% for house in houses %}
+                        <option value="{{ house.id }}" {% if selected_house and house.id == selected_house.id %}selected{% endif %}>{{ house.house_name }}</option>
+                    {% endfor %}
+                </select>
+            </form>
+            <div class="house-summary">
+                {% if selected_house %}
+                    <strong>{{ selected_house.house_name }}</strong>
+                    <span>{{ selected_house.rooms|length }} rooms</span>
+                    <span>{{ selected_house_device_count }} devices</span>
+                {% else %}
+                    <strong>No house selected</strong>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="house-actions">
+            <form method="POST" action="{{ url_for('create_house') }}" class="house-form">
+                <input name="house_name" placeholder="New house name" required />
+                <button class="button button-primary" type="submit">Add House</button>
+            </form>
+            {% if selected_house %}
+                <form method="POST" action="{{ url_for('create_room') }}" class="house-form">
+                    <input type="hidden" name="house_id" value="{{ selected_house.id }}" />
+                    <input name="room_name" placeholder="New room name" required />
+                    <button class="button button-secondary" type="submit">Add Room</button>
+                </form>
+            {% endif %}
+        </div>
+    </section>
+
     {% if rooms %}
         <section class="room-grid">
             {% for room in rooms %}
