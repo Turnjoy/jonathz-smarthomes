@@ -44,7 +44,21 @@ def current_user():
 
 @app.route('/')
 def marketing():
-    return render_template('marketing.html')
+    services = [
+        {
+            "name": "Curtain Automation",
+            "description": "Motorized curtain control with instant open and close commands.",
+        },
+        {
+            "name": "Lighting & Plug Control",
+            "description": "Low-latency switching for lights, sockets, and relay modules.",
+        },
+        {
+            "name": "Camera Monitoring",
+            "description": "Live stream slots for camera feeds mapped to each room.",
+        },
+    ]
+    return render_template('marketing.html', services=services)
 
 
 @app.route('/signup', methods=['GET', 'POST'])

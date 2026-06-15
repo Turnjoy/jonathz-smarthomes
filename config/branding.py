@@ -3,8 +3,8 @@ from pathlib import Path
 
 
 DEFAULT_BRAND = {
-    "company_name": "Jonathz SmartHomes",
-    "tagline": "Premium smart living, secured end to end.",
+    "company_name": "Jonathz SmartHomes Limited",
+    "tagline": "Unified control for every connected room",
     "contact": {
         "email": "support@jonathz-smarthomes.local",
         "phone": "+234 000 000 0000",
@@ -16,9 +16,9 @@ DEFAULT_BRAND = {
         "terms_url": "#",
     },
     "theme": {
-        "primary": "#0f766e",
-        "secondary": "#1f2937",
-        "accent": "#f59e0b",
+        "primary": "#0F294A",
+        "secondary": "#0B0C10",
+        "accent": "#D4AF37",
     },
     "assets": {
         "logo": "",
